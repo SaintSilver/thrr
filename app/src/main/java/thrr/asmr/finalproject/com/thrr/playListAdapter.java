@@ -70,7 +70,9 @@ public class playListAdapter extends BaseAdapter {
                 list.get(position).getMediaPlayer().stop();
                 list.get(position).getMediaPlayer().release();
                 list.get(position).setMediaPlayer(null);
+                list.get(position).getButton().setEnabled(true);
                 list.remove(position);
+
                 adapter.notifyDataSetChanged();
             }
         });

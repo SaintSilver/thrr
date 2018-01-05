@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity{
+public class SleepActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3 ;
     private ListView lv;
-    private TabHost tabHost1;
+    private TabHost tabHost_1;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -31,42 +31,42 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sleep);
 
-        tabHost1 = (TabHost) findViewById(R.id.tabHost1) ;
-        tabHost1.setup() ;
+        tabHost_1 = (TabHost) findViewById(R.id.tabHost_1) ;
+        tabHost_1.setup() ;
 
         // 첫 번째 Tab. (탭 표시 텍스트:"TAB 1"), (페이지 뷰:"tab1")
-        TabHost.TabSpec ts1 = tabHost1.newTabSpec("Tab Spec 1") ;
-        ts1.setContent(R.id.tab1) ;
+        TabHost.TabSpec ts1 = tabHost_1.newTabSpec("Tab Spec 1") ;
+        ts1.setContent(R.id.tab_1) ;
         ts1.setIndicator("자연") ;
-        tabHost1.addTab(ts1) ;
+        tabHost_1.addTab(ts1) ;
 
-        TabHost.TabSpec ts2 = tabHost1.newTabSpec("Tab Spec 2") ;
-        ts2.setContent(R.id.tab2) ;
+        TabHost.TabSpec ts2 = tabHost_1.newTabSpec("Tab Spec 2") ;
+        ts2.setContent(R.id.tab_2) ;
         ts2.setIndicator("사물") ;
-        tabHost1.addTab(ts2) ;
+        tabHost_1.addTab(ts2) ;
 
-        TabHost.TabSpec ts3 = tabHost1.newTabSpec("Tab Spec 3") ;
-        ts3.setContent(R.id.tab3) ;
+        TabHost.TabSpec ts3 = tabHost_1.newTabSpec("Tab Spec 3") ;
+        ts3.setContent(R.id.tab_3) ;
         ts3.setIndicator("사물2") ;
-        tabHost1.addTab(ts3) ;
+        tabHost_1.addTab(ts3) ;
 
-        TabHost.TabSpec ts4 = tabHost1.newTabSpec("Tab Spec 4") ;
-        ts4.setContent(R.id.tab4) ;
+        TabHost.TabSpec ts4 = tabHost_1.newTabSpec("Tab Spec 4") ;
+        ts4.setContent(R.id.tab_4) ;
         ts4.setIndicator("이팅") ;
-        tabHost1.addTab(ts4);
+        tabHost_1.addTab(ts4);
 
-        TabHost.TabSpec ts5 = tabHost1.newTabSpec("Tab Spec 5") ;
-        ts5.setContent(R.id.tab5) ;
+        TabHost.TabSpec ts5 = tabHost_1.newTabSpec("Tab Spec 5") ;
+        ts5.setContent(R.id.tab_5) ;
         ts5.setIndicator("기타") ;
-        tabHost1.addTab(ts5) ;
+        tabHost_1.addTab(ts5) ;
 
         //listview
-        lv = (ListView) findViewById(R.id.musiclistview);
+        lv = (ListView) findViewById(R.id.musiclistview1);
 
         for(int i = 0 ; i < btn_array.length; i++){
-            final int btn_id = getResources().getIdentifier("Button"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
+            final int btn_id = getResources().getIdentifier("Button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
             btn_array[i] = findViewById(btn_id);
 
             final int finalI = i;
@@ -79,18 +79,21 @@ public class MainActivity extends AppCompatActivity{
                             mediaPlayer1.setLooping(true);
                             mediaPlayer1.start();
                             list.add(new playListVO(R.drawable.day, btn_array[finalI], mediaPlayer1));
+                            btn_array[finalI].setEnabled(false);
                             break;
                         case 1: //소리 하나 선택중
                             mediaPlayer2 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
                             mediaPlayer2.setLooping(true);
                             mediaPlayer2.start();
                             list.add(new playListVO(R.drawable.night, btn_array[finalI], mediaPlayer2));
+                            btn_array[finalI].setEnabled(false);
                             break;
                         case 2: //소리 두개 선택중
                             mediaPlayer3 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
                             mediaPlayer3.setLooping(true);
                             mediaPlayer3.start();
                             list.add(new playListVO(R.drawable.test, btn_array[finalI], mediaPlayer3));
+                            btn_array[finalI].setEnabled(false);
                             break;
                         case 3: //리스트가 꽉 참
                             Toast.makeText(getApplicationContext(),"3곡까지만 조합할 수 있습니다.", Toast.LENGTH_LONG).show();
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity{
 
 
             adapter = new playListAdapter(getApplicationContext(), R.layout.musiclist_layout, list);
-            ((ListView) findViewById(R.id.musiclistview)).setAdapter(adapter);
+            ((ListView) findViewById(R.id.musiclistview1)).setAdapter(adapter);
         }
     }
 }
