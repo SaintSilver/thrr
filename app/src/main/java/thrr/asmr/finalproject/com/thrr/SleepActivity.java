@@ -108,4 +108,18 @@ public class SleepActivity extends AppCompatActivity {
             ((ListView) findViewById(R.id.musiclistview1)).setAdapter(adapter);
         }
     }
+
+    //뒤로가기 하면 초기화
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        for(int i = 0; i<list.size(); i++){
+            list.get(i).getMediaPlayer().stop();
+            list.get(i).getMediaPlayer().release();
+            list.get(i).setMediaPlayer(null);
+            list.get(i).getButton().setEnabled(true);
+        }
+        list = new ArrayList<>();
+        adapter.notifyDataSetChanged();
+    }
 }

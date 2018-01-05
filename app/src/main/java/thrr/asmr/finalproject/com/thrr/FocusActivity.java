@@ -1,5 +1,6 @@
 package thrr.asmr.finalproject.com.thrr;
 
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class FocusActivity extends AppCompatActivity{
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3 ;
     private ListView lv;
     private TabHost tabHost1;
+    private TextView tv1;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -64,6 +67,11 @@ public class FocusActivity extends AppCompatActivity{
 
         //listview
         lv = (ListView) findViewById(R.id.musiclistview1);
+        tv1 = (TextView) findViewById(R.id.textView1);
+
+        tv1.setTypeface(Typeface.createFromAsset(getAssets(),"mom.ttf"));
+        tv1.setText("집중 모드");
+
 
         for(int i = 0 ; i < btn_array.length; i++){
             final int btn_id = getResources().getIdentifier("Button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
@@ -103,9 +111,23 @@ public class FocusActivity extends AppCompatActivity{
                 }
             });
 
-
             adapter = new playListAdapter(getApplicationContext(), R.layout.musiclist_layout, list);
             ((ListView) findViewById(R.id.musiclistview1)).setAdapter(adapter);
         }
     }
+
+    //뒤로가기 하면 초기화
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        for(int i = 0; i<list.size(); i++){
+            list.get(i).getMediaPlayer().stop();
+            list.get(i).getMediaPlayer().release();
+            list.get(i).setMediaPlayer(null);
+            list.get(i).getButton().setEnabled(true);
+        }
+        list = new ArrayList<>();
+        adapter.notifyDataSetChanged();
+    }
+
 }

@@ -8,7 +8,7 @@
     tools:context="thrr.asmr.finalproject.com.thrr.FocusActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -21,7 +21,7 @@
         android:id="@+id/tabHost_1"
         android:layout_width="300dip"
         android:layout_height="180dip"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp">
 
@@ -58,10 +58,9 @@
                             android:id="@+id/Button_1"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
-                            android:text="Button"
+                            android:background="@drawable/rainpic"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -715,8 +714,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
-        android:layout_toLeftOf="@+id/textView"
-        android:layout_toStartOf="@+id/textView"
+        android:layout_toLeftOf="@+id/textView1"
+        android:layout_toStartOf="@+id/textView1"
         android:text="오전"
         android:textSize="30sp" />
 
