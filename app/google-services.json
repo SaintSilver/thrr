@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "983925983359",
+    "project_id": "thrr-191203"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983925983359:android:3cecc9b292ae3a2b",
+        "android_client_info": {
+          "package_name": "thrr.asmr.finalproject.com.thrr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983925983359-t2avprhf1hsfml01a2m06uhr6asfj9k3.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "983925983359-7q3jrkju51kfhm73nj28p6keqebijmnj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "thrr.asmr.finalproject.com.thrr",
+            "certificate_hash": "9e2294d3b8acdc543cb33621eeb5e914fc000885"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzpQrd2ohmup2AeCMOACh1XSdnXjTZVeM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
