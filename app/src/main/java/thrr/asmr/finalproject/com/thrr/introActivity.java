@@ -24,7 +24,7 @@ public class introActivity extends AppCompatActivity {
     Runnable runnable = new Runnable(){
         @Override
         public void run(){
-            startActivity(new Intent(introActivity.this, choiceActivity.class));
+            startActivity(new Intent(introActivity.this, LoginActivity.class));
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);  //overridePendingTransition 이란 함수를 이용하여 fade in,out 효과를줌.
         }
