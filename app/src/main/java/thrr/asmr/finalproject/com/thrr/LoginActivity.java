@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,6 +23,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.util.Arrays;
+
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener{
 
@@ -29,10 +34,51 @@ public class LoginActivity extends AppCompatActivity implements
     private ProgressDialog mProgressDialog;
     private SharedPreferences spf;
 
+    //자체로그인
+    EditText inputEmail ;
+    EditText inputPw;
+    Button loginBtn;
+    TextView tv_signin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //findID
+        inputEmail = (EditText) findViewById(R.id.inputEmail);
+        inputPw = (EditText) findViewById(R.id.inputPw);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
+        tv_signin = (TextView) findViewById(R.id.tv_signin);
+
+        //자체로그인
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getEmail = String.valueOf(inputEmail.getText());
+                String getPw = String.valueOf(inputPw.getText());
+                if(getEmail.equals("kutar37@gmail.com") && getPw.equals("1234")){
+                    String email = getEmail;
+                    spf = getSharedPreferences("emailspf", MODE_PRIVATE);
+                    spf.edit().putString("email", email).commit();
+                    startActivity(new Intent(LoginActivity.this, choiceActivity.class));
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(), "이메일과 비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        //회원가입
+        tv_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, SignInActivity.class));
+
+            }
+        });
+
+
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -121,7 +167,6 @@ public class LoginActivity extends AppCompatActivity implements
             spf = getSharedPreferences("emailspf", MODE_PRIVATE);
             spf.edit().putString("email", email).commit();
             Log.v("google login",email+" : Login Success!");
-
         } else {
             // Signed out, show unauthenticated UI.
             Log.v("google login","result failed");

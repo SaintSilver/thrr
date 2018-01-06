@@ -155,5 +155,4 @@ public class SetActivity extends AppCompatActivity implements GoogleApiClient.On
             mProgressDialog.hide();
         }
     }
-
 }
