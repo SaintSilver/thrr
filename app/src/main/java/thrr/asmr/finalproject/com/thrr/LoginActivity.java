@@ -35,10 +35,9 @@ public class LoginActivity extends AppCompatActivity implements
     private SharedPreferences spf;
 
     //자체로그인
-    EditText inputEmail ;
-    EditText inputPw;
-    Button loginBtn;
-    TextView tv_signin;
+    private EditText inputEmail, inputPw;
+    private Button loginBtn;
+    private TextView tv_signin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

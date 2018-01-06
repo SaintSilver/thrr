@@ -8,10 +8,8 @@ import android.widget.EditText;
 
 public class SignInActivity extends AppCompatActivity {
 
-    EditText joinEmail;
-    EditText joinPw;
-    Button joinBtn;
-    Button cancelBtn;
+    private EditText joinEmail, joinPw;
+    private Button joinBtn, cancelBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

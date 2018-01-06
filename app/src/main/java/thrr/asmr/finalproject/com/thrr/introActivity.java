@@ -8,7 +8,7 @@ import android.view.Window;
 
 public class introActivity extends AppCompatActivity {
 
-    Handler h;//핸들러 선언
+    private Handler h;//핸들러 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

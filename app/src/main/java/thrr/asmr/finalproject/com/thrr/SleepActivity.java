@@ -26,7 +26,7 @@ public class SleepActivity extends AppCompatActivity {
 
     private ArrayList<playListVO> list = new ArrayList<>();
     private Button[] btn_array = new Button[50];
-    playListAdapter adapter;
+    private playListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

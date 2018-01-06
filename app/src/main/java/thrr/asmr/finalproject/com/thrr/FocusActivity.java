@@ -20,7 +20,6 @@ public class FocusActivity extends AppCompatActivity{
     private ListView lv;
     private TabHost tabHost1;
     private TextView tv1;
-    private Button set_btn;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -73,17 +72,6 @@ public class FocusActivity extends AppCompatActivity{
 
         tv1.setTypeface(Typeface.createFromAsset(getAssets(),"mom.ttf"));
         tv1.setText("집중 모드");
-
-        //설정
-        set_btn = (Button) findViewById(R.id.set_btn);
-
-        set_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FocusActivity.this, SetActivity.class));
-            }
-        });
-
 
         for(int i = 0 ; i < btn_array.length; i++){
             final int btn_id = getResources().getIdentifier("Button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
