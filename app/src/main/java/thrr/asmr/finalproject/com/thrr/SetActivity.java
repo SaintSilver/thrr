@@ -121,8 +121,7 @@ public class SetActivity extends AppCompatActivity implements GoogleApiClient.On
                         String loginEmail = spf.getString("email","");
                         Log.v("로그인되어있는 이메일: ",loginEmail);
                         spf.edit().remove("email").commit();
-                        loginEmail = spf.getString("email","");
-                        Log.v("logout : ",loginEmail);
+                        spf = null;
                         Intent intent = new Intent(SetActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

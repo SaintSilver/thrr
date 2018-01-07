@@ -21,7 +21,6 @@ public class choiceActivity extends AppCompatActivity {
         btn_chart = (Button) findViewById(R.id.btn_chart);
         btn_setting = (Button) findViewById(R.id.btn_setting);
 
-
         btn_sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +38,7 @@ public class choiceActivity extends AppCompatActivity {
         btn_chart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "아직 미구현이야.", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(choiceActivity.this, PieChartActivity.class));
             }
         });
 

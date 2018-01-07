@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -32,15 +33,20 @@ public class SignInActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputEmail = String.valueOf(joinEmail.getText());
-                String inputPw = String.valueOf(joinPw.getText());
+                String inputEmail = String.valueOf(joinEmail.getText()).trim();
+                String inputPw = String.valueOf(joinPw.getText()).trim();
 
-                //DB에 올릴거야.
+                if(inputEmail.equals("") | inputPw.equals("")){
+                    Toast.makeText(getApplicationContext(),"빈 칸이 있습니다.",Toast.LENGTH_LONG).show();
+                }else{
+                    //DB에 올릴거야.
 
-                //DB 완료 후 이전창으로
-                finish();
+                    //DB 완료 후 이전창으로
+                    finish();
+                }
+
+
             }
         });
-
     }
 }

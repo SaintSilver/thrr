@@ -1,15 +1,29 @@
 package thrr.asmr.finalproject.com.thrr;
 
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,7 +33,7 @@ public class FocusActivity extends AppCompatActivity{
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3 ;
     private ListView lv;
     private TabHost tabHost1;
-    private TextView tv1;
+    int OVERLAY_PERMISSION_CODE= 1;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -32,10 +46,36 @@ public class FocusActivity extends AppCompatActivity{
     private Button[] btn_array = new Button[50];
     playListAdapter adapter;
 
+    //영만
+    int alarmTime = -1;
+    long backKeyPressedTime = 0;
+    int hour = 00;
+    int min = 00;
+    WindowManager manager;
+    customViewGroup view;
+
+    TextView textView = null;
+
+    Button btn_lock = null;
+    Button btn_time = null;
+
+    TimePickerDialog timePickerDialog = null;
+    private boolean askedForOverlayPermission;
+    // 여기까지 영만
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus);
+
+        addOverlay();
+
+        hour= getSharedPreferences("time", MODE_PRIVATE).getInt("hour", 00);//알람시간 설정의 시
+        min= getSharedPreferences("time", MODE_PRIVATE).getInt("min", 00);//알람시간 설정의 분
+
+        textView = (TextView)findViewById(R.id.textView4);
+        btn_lock = (Button)findViewById(R.id.button2);
+        btn_time = (Button)findViewById(R.id.button);
 
         tabHost1 = (TabHost) findViewById(R.id.tabHost_1) ;
         tabHost1.setup() ;
@@ -68,10 +108,6 @@ public class FocusActivity extends AppCompatActivity{
 
         //listview
         lv = (ListView) findViewById(R.id.musiclistview1);
-        tv1 = (TextView) findViewById(R.id.textView1);
-
-        tv1.setTypeface(Typeface.createFromAsset(getAssets(),"mom.ttf"));
-        tv1.setText("집중 모드");
 
         for(int i = 0 ; i < btn_array.length; i++){
             final int btn_id = getResources().getIdentifier("Button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
@@ -111,23 +147,203 @@ public class FocusActivity extends AppCompatActivity{
                 }
             });
 
+
             adapter = new playListAdapter(getApplicationContext(), R.layout.musiclist_layout, list);
             ((ListView) findViewById(R.id.musiclistview1)).setAdapter(adapter);
         }
-    }
+        //시간 설정
+        btn_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePickerDialog.show();
+            }
+        });
 
-    //뒤로가기 하면 초기화
+        //시간설정 창 띄우기
+        timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                //hour = timePicker.getHour(); // == i
+                //min = timePicker.getMinute(); // == i1
+                hour = i;
+                min = i1;
+                if(hour<10) {
+                    if(min<10){
+                        textView.setText("0"+hour + " : 0" + min);
+                    }else{
+                        textView.setText("0"+hour + " : " + min);
+                    }
+
+                }else{
+                    if(min<10){
+                        textView.setText(hour + " : 0" + min);
+                    }else{
+                        textView.setText(hour + " : " + min);
+                    }
+
+                }
+                alarmTime = hour*60 + min;
+            }
+        }, hour, min, true);
+        //잠글때 스크롤 안내려오게하고 시간설정 과 시작버튼 사라지게하기
+        btn_lock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                scrollLock();
+
+                new Thread(new timeThread()).start();
+                if(hour>0||min>0) {
+                    btn_lock.setVisibility(View.INVISIBLE);
+                    btn_time.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+        });
+    }
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
-        for(int i = 0; i<list.size(); i++){
-            list.get(i).getMediaPlayer().stop();
-            list.get(i).getMediaPlayer().release();
-            list.get(i).setMediaPlayer(null);
-            list.get(i).getButton().setEnabled(true);
+        if(alarmTime <0) {
+            for(int i = 0; i<list.size(); i++){
+                list.get(i).getMediaPlayer().stop();
+                list.get(i).getMediaPlayer().release();
+                list.get(i).setMediaPlayer(null);
+                list.get(i).getButton().setEnabled(true);
+            }
+            list = new ArrayList<>();
+            adapter.notifyDataSetChanged();
+            //알람시간이 0보다 작으면 백키가 눌림
+
+            backButtonFunction();
+
         }
-        list = new ArrayList<>();
-        adapter.notifyDataSetChanged();
+    }
+    //백키 동작 메소드
+    public void backButtonFunction(){
+
+        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+        //Toast.makeText(getApplicationContext(), ""+backStackCount, Toast.LENGTH_SHORT).show();
+        //currentTimeMillis 현재시간이 버튼을 눌린 시간 + 2초 보다 흘럿다면 2초내 클릭 안한것임.
+        if (backStackCount > 0) {
+            //  FragmentUtil.goBack();
+            super.onBackPressed();
+        }
+        if (backStackCount == 1) return;
+
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+
+            //backKeyPressedTime 버튼을 누른 시간을 입력
+            backKeyPressedTime = System.currentTimeMillis();
+
+            super.onBackPressed();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            //    finish();
+            //     toast.cancel();
+        }
+
+    }
+    //핸들러 시간초 변경
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            textView.setText(msg.arg1 + "");
+            if(msg.arg1%60<10){
+                if (msg.arg1 >= 60) {
+                    textView.setText(msg.arg1 / 60 + " : 0" + msg.arg1 % 60);
+                } else if (msg.arg1 < 60) {
+                    textView.setText("00 : 0" + msg.arg1 % 60);
+                }
+            }else {
+                if (msg.arg1 >= 60) {
+                    textView.setText(msg.arg1 / 60 + " : " + msg.arg1 % 60);
+                } else if (msg.arg1 < 60) {
+                    textView.setText("00 : " + msg.arg1 % 60);
+                }
+            }
+            msg.arg1--;
+            alarmTime = msg.arg1;
+            if(alarmTime<0) {
+
+                btn_lock.setVisibility(View.VISIBLE);
+                btn_time.setVisibility(View.VISIBLE);
+                scrollOn();
+
+            }
+            alarmTime = msg.arg1;
+            SharedPreferences sp = getSharedPreferences("time", MODE_PRIVATE);
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putInt("hour", alarmTime/60);
+            edit.putInt("min", alarmTime%60);
+            edit.commit();
+        }
+    };
+    //쓰레드
+    public class timeThread implements Runnable {
+        int MAXTIME = alarmTime;
+
+        @Override
+        public void run() {
+
+            for (int i = MAXTIME; i >= 0; i--) {
+
+                Message msg = new Message();
+                msg.arg1 = i;
+                handler.sendMessage(msg);
+
+                try {
+                    Thread.sleep(60000); //60초
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    //스크롤바 밑으로 pull down 안되게 해주고 되게해주는 메소드들
+    public class customViewGroup extends ViewGroup {
+        public customViewGroup(Context context) {
+            super(context);
+        }
+        @Override
+        protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        }
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent ev) {
+            Log.v("customViewGroup", "**********Intercepted");
+            return true;
+        }
+
+    }
+    public void scrollLock(){
+        manager = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE));
+        WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
+        localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        localLayoutParams.gravity = Gravity.TOP;
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+// this is to enable the notification to recieve touch events
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+// Draws over status bar
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        localLayoutParams.height = (int) (50 * getResources().getDisplayMetrics().scaledDensity);
+        localLayoutParams.format = PixelFormat.TRANSPARENT;
+        view = new customViewGroup(this);
+        manager.addView(view, localLayoutParams);
+    }
+    public void scrollOn(){
+        manager.removeViewImmediate(view);
     }
 
+    public void addOverlay() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                askedForOverlayPermission = true;
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, OVERLAY_PERMISSION_CODE);
+            }
+        }
+    }
 }

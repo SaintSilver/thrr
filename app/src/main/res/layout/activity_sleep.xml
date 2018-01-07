@@ -743,19 +743,26 @@
         android:layout_alignBottom="@+id/button2"
         android:layout_alignLeft="@+id/musiclistview1"
         android:layout_alignStart="@+id/musiclistview1"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:text="Button" />
+        android:text="시간설정" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
+        android:layout_alignEnd="@+id/musiclistview1"
+        android:layout_alignRight="@+id/musiclistview1"
         android:layout_below="@+id/textView4"
         android:layout_marginTop="13dp"
-        android:text="Button" />
+        android:text="확인" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button"
+        android:layout_alignEnd="@+id/textView1"
+        android:layout_alignRight="@+id/textView1"
+        android:text="끄기" />
 
 
 </RelativeLayout>

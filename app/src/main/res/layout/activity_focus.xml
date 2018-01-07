@@ -742,7 +742,7 @@
         android:layout_alignStart="@+id/musiclistview1"
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
-        android:text="Button" />
+        android:text="시간설정" />
 
     <Button
         android:id="@+id/button2"
@@ -752,7 +752,7 @@
         android:layout_alignStart="@+id/textView4"
         android:layout_below="@+id/textView4"
         android:layout_marginTop="13dp"
-        android:text="Button" />
+        android:text="잠그기" />
 
 
 </RelativeLayout>

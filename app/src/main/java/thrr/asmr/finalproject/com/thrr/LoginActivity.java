@@ -3,6 +3,7 @@ package thrr.asmr.finalproject.com.thrr;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements
     //자체로그인
     private EditText inputEmail, inputPw;
     private Button loginBtn;
-    private TextView tv_signin;
+    private TextView tv_signin, tv_main, tv_sub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,10 @@ public class LoginActivity extends AppCompatActivity implements
         inputPw = (EditText) findViewById(R.id.inputPw);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         tv_signin = (TextView) findViewById(R.id.tv_signin);
+        tv_main = (TextView) findViewById(R.id.tv_main);
+        tv_sub = (TextView) findViewById(R.id.tv_sub);
+
+        loginBtn.setText("Login to My Account >");
 
         //자체로그인
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -76,8 +81,6 @@ public class LoginActivity extends AppCompatActivity implements
 
             }
         });
-
-
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -122,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
             Log.v("구글 로그인 단계","onStart() if");
-
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -134,7 +136,6 @@ public class LoginActivity extends AppCompatActivity implements
                     hideProgressDialog();
                     handleSignInResult(googleSignInResult);
                     Log.v("구글 로그인 단계","onStart() else");
-
                 }
             });
         }
@@ -150,8 +151,6 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
             Log.v("구글 로그인 단계","onActivityResult");
-            startActivity(new Intent(LoginActivity.this, choiceActivity.class));
-            finish();
         }
     }
 // [END onActivityResult]
@@ -166,6 +165,10 @@ public class LoginActivity extends AppCompatActivity implements
             spf = getSharedPreferences("emailspf", MODE_PRIVATE);
             spf.edit().putString("email", email).commit();
             Log.v("google login",email+" : Login Success!");
+            int atIndex = email.indexOf("@");
+            Toast.makeText(getApplicationContext(), email.substring(0,atIndex)+"님, 환영합니다.", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(LoginActivity.this, choiceActivity.class));
+            finish();
         } else {
             // Signed out, show unauthenticated UI.
             Log.v("google login","result failed");

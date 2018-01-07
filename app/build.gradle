@@ -29,3 +29,15 @@ dependencies {
     //구글 로그인
     compile 'com.google.android.gms:play-services-auth:9.0.0'
 }
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+}
