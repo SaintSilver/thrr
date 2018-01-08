@@ -1,6 +1,7 @@
 package thrr.asmr.finalproject.com.thrr;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,11 @@ public class choiceActivity extends AppCompatActivity {
         btn_focus = (Button) findViewById(R.id.btn_focus);
         btn_chart = (Button) findViewById(R.id.btn_chart);
         btn_setting = (Button) findViewById(R.id.btn_setting);
+
+        btn_sleep.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
+        btn_focus.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
+        btn_chart.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
+        btn_setting.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
 
         btn_sleep.setOnClickListener(new View.OnClickListener() {
             @Override
