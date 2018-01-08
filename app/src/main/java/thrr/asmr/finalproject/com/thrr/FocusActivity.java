@@ -42,7 +42,10 @@ public class FocusActivity extends AppCompatActivity{
     private ListView lv;
     private TabHost tabHost1;
     private ImageView question2, iv_sleep, iv_chart, iv_setting;
-    int OVERLAY_PERMISSION_CODE= 1;
+    private Button[] btn_array = new Button[50];
+    private playListAdapter adapter;
+    private TextView textView = null;
+    private Button btn_lock, btn_time ;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -67,23 +70,15 @@ public class FocusActivity extends AppCompatActivity{
     };
 
     private ArrayList<playListVO> list = new ArrayList<>();
-    private Button[] btn_array = new Button[50];
-    private playListAdapter adapter;
 
-    //영만
     private int alarmTime = -1;
     private long backKeyPressedTime = 0;
     private int hour, min = 00;
     private WindowManager manager;
     private customViewGroup view;
-
-    private TextView textView = null;
-
-    private Button btn_lock, btn_time ;
-
     private TimePickerDialog timePickerDialog = null;
     private boolean askedForOverlayPermission;
-    // 여기까지 영만
+    int OVERLAY_PERMISSION_CODE= 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

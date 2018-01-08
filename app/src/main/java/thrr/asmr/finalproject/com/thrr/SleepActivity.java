@@ -11,7 +11,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,12 +37,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class SleepActivity extends AppCompatActivity {
+public class SleepActivity extends AppCompatActivity implements SensorEventListener {
+
 
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3, player;
     private ListView lv;
     private TabHost tabHost_1;
     private ImageView iv_focus, iv_chart, iv_setting, question;
+    private Button[] btn_array = new Button[50];
+    private playListAdapter adapter;
+    private TextView textView, textView2;
+    private Button btn_lock, btn_time, btn_reset;
 
     private int[] musicID = {
             R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
@@ -62,15 +73,11 @@ public class SleepActivity extends AppCompatActivity {
     };
 
     private ArrayList<playListVO> list = new ArrayList<>();
-    private Button[] btn_array = new Button[50];
-    private playListAdapter adapter;
 
-    //알람 및 간
+
+    //알람
     private AlarmManager mManager;
     private int hour, min = 00;
-
-    private TextView textView, textView2, tv_sleep_am_or_pm;
-    private Button btn_lock, btn_time, btn_reset;
 
     // 현재시간
     private String getTime1 = null;   //년
@@ -87,6 +94,15 @@ public class SleepActivity extends AppCompatActivity {
 
     private NotificationManager mNotification;  //??notification??
     private GregorianCalendar mCalendar;        //그레고리언 달력
+
+    //조도, 센서 관련 객체
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    SensorManager m_sensor_manager;
+    Sensor m_light_sensor;
+    ArrayList<String> meanArray= new ArrayList<String>(); // 조도 값을 담아놓는 ArrayList
+    float k = 0; // 평균
+    String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +159,10 @@ public class SleepActivity extends AppCompatActivity {
         iv_chart = (ImageView) findViewById(R.id.iv_chart);
         iv_setting = (ImageView) findViewById(R.id.iv_setting);
 
+        //조도
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); // sensor Service 얻어오기
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); // 조도 센서랍니다
+
         //메뉴버튼 3개
         iv_focus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +178,6 @@ public class SleepActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 startActivity(new Intent(SleepActivity.this, FocusActivity.class));
                 finish();
-
             }
         });
 
@@ -361,6 +380,15 @@ public class SleepActivity extends AppCompatActivity {
                 btn_reset.setVisibility(View.INVISIBLE);
                 spf.edit().putInt("AlarmHour", -1).commit();     //spf의 설정을 다시 -1로해서 버튼들이 기본으로 돌아가게 만들어줌
                 spf.edit().putInt("AlarmMin", -1).commit();
+
+                for(int j=0; j<meanArray.size();j++){
+                    k+=Float.parseFloat(meanArray.get(j)); // 조도 값이 담겨있는 ArrayList 안의 값을 모두 더해줌
+                }
+                k = k/meanArray.size(); //평균내기
+
+                /* ==================K 값을 서버로 전달하면 돼 ===================*/
+                Log.v("조도값 :::::::::::::::",String.valueOf(k));
+
             }
         });
         btn_time.setOnClickListener(new View.OnClickListener() {    //시간 설정클릭시 타임피커 호출
@@ -381,7 +409,6 @@ public class SleepActivity extends AppCompatActivity {
                 btn_lock.setVisibility(View.INVISIBLE);
                 btn_time.setVisibility(View.INVISIBLE);
                 btn_reset.setVisibility(View.VISIBLE);
-
             }
         });
 
@@ -478,4 +505,29 @@ public class SleepActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    //센서 바뀌면 호출됨
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
+            str = "밝기 : " + event.values[0] + "lux"; // 조도 센서의 경우 event.values[0]에 조도값이 있다고 한다.
+            meanArray.add(String.valueOf(event.values[0])); // float 형인 이벤트 값을 String 형으로
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    protected void onResume(){
+        super.onResume();
+
+        mSensorManager.registerListener( this, mSensor,SensorManager.SENSOR_DELAY_UI); // onCreate에서 생성한 애를 등록함
+    }
+
+    protected void onPause(){
+        super.onPause();
+
+        mSensorManager.unregisterListener(this); //unregister
+    }
+
 }
