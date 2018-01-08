@@ -39,7 +39,6 @@ import java.util.GregorianCalendar;
 
 public class SleepActivity extends AppCompatActivity implements SensorEventListener {
 
-
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3, player;
     private ListView lv;
     private TabHost tabHost_1;
@@ -388,6 +387,7 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
 
                 /* ==================K 값을 서버로 전달하면 돼 ===================*/
                 Log.v("조도값 :::::::::::::::",String.valueOf(k));
+
 
             }
         });
