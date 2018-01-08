@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="thrr.asmr.finalproject.com.thrr.FocusActivity"
-    android:background="@drawable/focusback1">
+    android:background="@drawable/focus_litle_up"
+    tools:context="thrr.asmr.finalproject.com.thrr.FocusActivity">
 
     <!--아이콘-->
     <ImageView
@@ -84,9 +84,9 @@
                                 android:id="@+id/button_2"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/bird7" />
 
                             <Button
@@ -100,9 +100,9 @@
                                 android:id="@+id/button_4"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/leaves7" />
 
                             <Button
@@ -131,9 +131,9 @@
                                 android:id="@+id/button_7"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/snow7" />
 
                             <Button
@@ -147,9 +147,9 @@
                                 android:id="@+id/button_9"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/waterdrop7" />
 
                             <Button
@@ -188,9 +188,9 @@
                                 android:id="@+id/button_12"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/book27" />
 
                             <Button
@@ -204,9 +204,9 @@
                                 android:id="@+id/button_14"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/cream27" />
 
                             <Button
@@ -234,9 +234,9 @@
                                 android:id="@+id/button_17"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/keyboard227" />
 
                             <Button
@@ -250,9 +250,9 @@
                                 android:id="@+id/button_19"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/piano27" />
 
                             <Button
@@ -291,9 +291,9 @@
                                 android:id="@+id/button_22"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/hairdryer27" />
 
                             <Button
@@ -307,9 +307,9 @@
                                 android:id="@+id/button_24"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/pountainpen7" />
 
                             <Button
@@ -337,9 +337,9 @@
                                 android:id="@+id/button_27"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/slime7" />
 
                             <Button
@@ -353,9 +353,9 @@
                                 android:id="@+id/button_29"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/train7" />
 
                             <Button
@@ -394,9 +394,9 @@
                                 android:id="@+id/button_32"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/conflakes27" />
 
                             <Button
@@ -410,9 +410,9 @@
                                 android:id="@+id/button_34"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/dango27" />
 
                             <Button
@@ -440,9 +440,9 @@
                                 android:id="@+id/button_37"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/macaron27" />
 
                             <Button
@@ -456,9 +456,9 @@
                                 android:id="@+id/button_39"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/pizza7" />
 
                             <Button
@@ -497,9 +497,9 @@
                                 android:id="@+id/button_42"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/earblow5" />
 
                             <Button
@@ -513,9 +513,9 @@
                                 android:id="@+id/button_44"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/hand27" />
 
                             <Button
@@ -543,9 +543,9 @@
                                 android:id="@+id/button_47"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/scratch7" />
 
                             <Button
@@ -559,9 +559,9 @@
                                 android:id="@+id/button_49"
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
-                                android:layout_weight="1"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/tapping7" />
 
                             <Button
@@ -595,7 +595,7 @@
 
     <TextView
         android:id="@+id/tv_clock"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_above="@+id/btn_time"
         android:layout_alignLeft="@+id/btn_time"
@@ -613,8 +613,8 @@
         android:layout_height="30dp"
         android:layout_above="@+id/under_bar"
         android:layout_alignLeft="@id/under_bar"
-        android:layout_marginLeft="120dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="120dp"
         android:background="@drawable/silverbtn"
         android:text="set" />
 

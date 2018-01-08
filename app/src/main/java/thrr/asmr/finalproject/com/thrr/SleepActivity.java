@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -110,6 +111,7 @@ public class SleepActivity extends AppCompatActivity {
         getTime3 = sdf3.format(date);
         getTime4 = sdf4.format(date);
         getTime5 = sdf5.format(date);
+
         spf = getSharedPreferences("AlarmTimeSet", MODE_PRIVATE);
         alarmHour = spf.getInt("AlarmHour", -1);                                     //시간 저장한값 가져오고 없으면 -1
         alarmMin = spf.getInt("AlarmMin", -1);                                      //분 저장한값 가져오고 없으면 -1
@@ -325,6 +327,8 @@ public class SleepActivity extends AppCompatActivity {
                 //min = timePicker.getMinute(); // == i1
                 hour = i;
                 min = i1;
+                Log.v("시간 : " , hour+"");
+                Log.v("분 : ", min+"");
                 if (hour < 10) {
                     if (min < 10) {
                         textView.setText("0" + hour + " : 0" + min);
@@ -372,6 +376,8 @@ public class SleepActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "알림이 설정되었습니다.", Toast.LENGTH_LONG).show();
                 setAlarm();
+                //푸시
+                new AlarmHATT(getApplicationContext()).Alarm();
                 btn_lock.setVisibility(View.INVISIBLE);
                 btn_time.setVisibility(View.INVISIBLE);
                 btn_reset.setVisibility(View.VISIBLE);
@@ -381,17 +387,43 @@ public class SleepActivity extends AppCompatActivity {
 
     }
 
+    //푸시
+    public class AlarmHATT {
+        private Context context;
+        public AlarmHATT(Context context) {
+            this.context=context;
+        }
+
+        public void Alarm() {
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(SleepActivity.this, BroadcastD.class);
+
+            PendingIntent sender = PendingIntent.getBroadcast(SleepActivity.this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND)+1);
+
+            //알람 예약
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }
+    }
+
+
     //알람의 설정
     private void setAlarm() {
         mManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (hour > Integer.parseInt(getTime4) || (hour == Integer.parseInt(getTime4) && min < Integer.parseInt(getTime5))) { //지금 시간보다 설정시간이 작으면 다음날이 되도록 날짜를 +1
+        if (hour < Integer.parseInt(getTime4) || (hour == Integer.parseInt(getTime4) && min < Integer.parseInt(getTime5))) { //지금 시간보다 설정시간이 작으면 다음날이 되도록 날짜를 +1
             mCalendar.set(Integer.parseInt(getTime1), Integer.parseInt(getTime2) - 1, Integer.parseInt(getTime3) + 1, hour, min, 00);
+
             mManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent());
 
             spf.edit().putInt("AlarmHour", hour).commit();
             spf.edit().putInt("AlarmMin", min).commit();
         } else {
             mCalendar.set(Integer.parseInt(getTime1), Integer.parseInt(getTime2) - 1, Integer.parseInt(getTime3), hour, min, 00);
+
+
             mManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent());
 
             spf.edit().putInt("AlarmHour", hour).commit();

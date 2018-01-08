@@ -3,20 +3,24 @@
     package="thrr.asmr.finalproject.com.thrr">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         <activity android:name=".FocusActivity" />
         <activity android:name=".introActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,8 +28,17 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SleepActivity" />
         <activity android:name=".SetActivity" />
-        <activity android:name=".SignInActivity"/>
-        <activity android:name=".PieChartActivity"/>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".PieChartActivity" />
+
+        <receiver
+            android:name=".BroadcastD"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".BroadcastF"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

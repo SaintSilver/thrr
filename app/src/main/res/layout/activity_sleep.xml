@@ -596,11 +596,11 @@
 
     <TextView
         android:id="@+id/tv_clock"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_above="@+id/under_bar"
-        android:layout_marginBottom="62dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="62dp"
         android:text="03:00"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"

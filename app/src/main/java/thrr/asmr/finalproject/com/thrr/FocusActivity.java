@@ -1,6 +1,8 @@
 package thrr.asmr.finalproject.com.thrr;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +34,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FocusActivity extends AppCompatActivity{
 
@@ -93,6 +96,7 @@ public class FocusActivity extends AppCompatActivity{
         min= getSharedPreferences("time", MODE_PRIVATE).getInt("min", 00);//알람시간 설정의 분
 
         textView = (TextView)findViewById(R.id.tv_clock);
+        textView.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/digital.ttf"));
         btn_lock = (Button)findViewById(R.id.btn_lock);
         btn_time = (Button)findViewById(R.id.btn_time);
 
@@ -364,13 +368,22 @@ public class FocusActivity extends AppCompatActivity{
             textView.setText(msg.arg1 + "");
             if(msg.arg1%60<10){
                 if (msg.arg1 >= 60) {
-                    textView.setText(msg.arg1 / 60 + " : 0" + msg.arg1 % 60);
+                    if(msg.arg1/60<10) {
+                        textView.setText("0"+msg.arg1 / 60 + " : 0" + msg.arg1 % 60);
+                    }else{
+                        textView.setText(msg.arg1 / 60 + " : 0" + msg.arg1 % 60);
+                    }
                 } else if (msg.arg1 < 60) {
                     textView.setText("00 : 0" + msg.arg1 % 60);
                 }
             }else {
                 if (msg.arg1 >= 60) {
-                    textView.setText(msg.arg1 / 60 + " : " + msg.arg1 % 60);
+                    if(msg.arg1/60<10) {
+                        textView.setText("0"+msg.arg1 / 60 + " : " + msg.arg1 % 60);
+                    }else{
+                        textView.setText(msg.arg1 / 60 + " : " + msg.arg1 % 60);
+                    }
+
                 } else if (msg.arg1 < 60) {
                     textView.setText("00 : " + msg.arg1 % 60);
                 }
@@ -392,6 +405,7 @@ public class FocusActivity extends AppCompatActivity{
             edit.commit();
         }
     };
+
     //쓰레드
     public class timeThread implements Runnable {
         int MAXTIME = alarmTime;
@@ -468,5 +482,27 @@ public class FocusActivity extends AppCompatActivity{
             }
         });
         builder.show();
+    }
+
+    //푸시
+    public class AlarmHATT {
+        private Context context;
+        public AlarmHATT(Context context) {
+            this.context=context;
+        }
+
+        public void Alarm() {
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(FocusActivity.this, BroadcastF.class);
+
+            PendingIntent sender = PendingIntent.getBroadcast(FocusActivity.this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND)+1);
+
+            //알람 예약
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }
     }
 }
