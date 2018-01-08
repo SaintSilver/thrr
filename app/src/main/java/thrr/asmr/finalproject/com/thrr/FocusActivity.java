@@ -1,10 +1,14 @@
 package thrr.asmr.finalproject.com.thrr;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -33,6 +38,7 @@ public class FocusActivity extends AppCompatActivity{
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3 ;
     private ListView lv;
     private TabHost tabHost1;
+    private ImageView question2, iv_sleep, iv_chart, iv_setting;
     int OVERLAY_PERMISSION_CODE= 1;
 
     private int[] musicID = {
@@ -42,24 +48,37 @@ public class FocusActivity extends AppCompatActivity{
             R.raw.chicken, R.raw.conflakes, R.raw.cracker, R.raw.dango, R.raw.hotdog, R.raw.jelly, R.raw.macaron, R.raw.noodle, R.raw.pizza, R.raw.shrimppuffing,
             R.raw.carving, R.raw.ear, R.raw.earblowing, R.raw.hand, R.raw.heartbeat, R.raw.lids, R.raw.scratch, R.raw.shaving, R.raw.tapping, R.raw.walking};
 
+    int[] grayIcon = {R.drawable.rain7,R.drawable.bird7,R.drawable.bug7,R.drawable.leaves7,R.drawable.cicada7,R.drawable.fire7,R.drawable.snow7,R.drawable.valley7,R.drawable.waterdrop7,R.drawable.wave7,
+            R.drawable.blanket27,R.drawable.book27,R.drawable.knife27,R.drawable.cream27,R.drawable.hiarbrush27,R.drawable.ice27,R.drawable.keyboard227,R.drawable.pencil7,R.drawable.piano27,R.drawable.scissors7,
+            R.drawable.egg7,R.drawable.hairdryer27,R.drawable.plasticbag7,R.drawable.pountainpen7,R.drawable.sand7,R.drawable.shampoo7,R.drawable.slime7,R.drawable.soap7,R.drawable.train7,R.drawable.zengarden27,
+            R.drawable.chicken27,R.drawable.conflakes27,R.drawable.cracker27,R.drawable.dango27,R.drawable.hotdog27,R.drawable.jelly27,R.drawable.macaron27,R.drawable.noodle7,R.drawable.pizza7,R.drawable.shrimppuffing7,
+            R.drawable.carving27,R.drawable.ear7,R.drawable.earblow7,R.drawable.hand27,R.drawable.heart7,R.drawable.lids7,R.drawable.scratch7,R.drawable.shaving7,R.drawable.tapping7,R.drawable.walking7,
+    };
+
+    private int[] whiteIcon = {
+            R.drawable.rain125, R.drawable.bird5, R.drawable.noun_308781_cc5, R.drawable.noun_1095263_cc5, R.drawable.cicada5, R.drawable.noun_7380_cc5, R.drawable.winter5, R.drawable.noun_3411_cc5, R.drawable.faucet5, R.drawable.wave5,
+            R.drawable.blanket5, R.drawable.book5, R.drawable.knife5, R.drawable.cream5, R.drawable.hiarbrush5, R.drawable.ice5, R.drawable.keyboard5, R.drawable.pen5, R.drawable.piano5, R.drawable.scissors5,
+            R.drawable.egg5, R.drawable.hairdryer5, R.drawable.plasticbag5, R.drawable.pountainpen5, R.drawable.sand5, R.drawable.shampoo5, R.drawable.sli5, R.drawable.soap5, R.drawable.train5, R.drawable.zengarden5,
+            R.drawable.chicken5, R.drawable.conflakes5, R.drawable.cracker5, R.drawable.dango5, R.drawable.hotdog5, R.drawable.jelly5, R.drawable.macaron5, R.drawable.noodle5, R.drawable.pizza5, R.drawable.shrimppuffing5,
+            R.drawable.carving5, R.drawable.ear5, R.drawable.earblow5, R.drawable.hand5, R.drawable.heart5, R.drawable.lid5, R.drawable.scratch5, R.drawable.shaving5, R.drawable.tapping5, R.drawable.walking5
+    };
+
     private ArrayList<playListVO> list = new ArrayList<>();
     private Button[] btn_array = new Button[50];
-    playListAdapter adapter;
+    private playListAdapter adapter;
 
     //영만
-    int alarmTime = -1;
-    long backKeyPressedTime = 0;
-    int hour = 00;
-    int min = 00;
-    WindowManager manager;
-    customViewGroup view;
+    private int alarmTime = -1;
+    private long backKeyPressedTime = 0;
+    private int hour, min = 00;
+    private WindowManager manager;
+    private customViewGroup view;
 
-    TextView textView = null;
+    private TextView textView = null;
 
-    Button btn_lock = null;
-    Button btn_time = null;
+    private Button btn_lock, btn_time ;
 
-    TimePickerDialog timePickerDialog = null;
+    private TimePickerDialog timePickerDialog = null;
     private boolean askedForOverlayPermission;
     // 여기까지 영만
 
@@ -73,11 +92,11 @@ public class FocusActivity extends AppCompatActivity{
         hour= getSharedPreferences("time", MODE_PRIVATE).getInt("hour", 00);//알람시간 설정의 시
         min= getSharedPreferences("time", MODE_PRIVATE).getInt("min", 00);//알람시간 설정의 분
 
-        textView = (TextView)findViewById(R.id.textView4);
-        btn_lock = (Button)findViewById(R.id.button2);
-        btn_time = (Button)findViewById(R.id.button);
+        textView = (TextView)findViewById(R.id.tv_clock);
+        btn_lock = (Button)findViewById(R.id.btn_lock);
+        btn_time = (Button)findViewById(R.id.btn_time);
 
-        tabHost1 = (TabHost) findViewById(R.id.tabHost_1) ;
+        tabHost1 = (TabHost) findViewById(R.id.tabHost1) ;
         tabHost1.setup() ;
 
         // 첫 번째 Tab. (탭 표시 텍스트:"TAB 1"), (페이지 뷰:"tab1")
@@ -106,11 +125,100 @@ public class FocusActivity extends AppCompatActivity{
         ts5.setIndicator("기타") ;
         tabHost1.addTab(ts5) ;
 
+        for(int i=0;i<tabHost1.getTabWidget().getChildCount();i++) {
+            TextView tv = (TextView) tabHost1.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextColor(Color.parseColor("#282828"));
+            tv.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
+            tv.setTextSize(12);
+        }
+
         //listview
         lv = (ListView) findViewById(R.id.musiclistview1);
 
+        /*몰입모드 (하단소프트키, 상태바 숨김) */
+        int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+        boolean isImmersiveModeEnabled = ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
+        if (isImmersiveModeEnabled) {
+            Log.i("Is on?", "Turning immersive mode mode off. ");
+        } else {
+            Log.i("Is on?", "Turning immersive mode mode on.");
+        }
+        newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+        /*몰입모드 끝 */
+
+        //다이얼로그
+        question2 = (ImageView) findViewById(R.id.question2);
+        question2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show();
+            }
+        });
+        //다이얼로그 끝
+
+        //메뉴버튼 3개
+        iv_sleep = (ImageView) findViewById(R.id.iv_sleep);
+        iv_chart = (ImageView) findViewById(R.id.iv_chart);
+        iv_setting = (ImageView) findViewById(R.id.iv_setting);
+
+        //메뉴버튼 3개
+        iv_sleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for(int i = 0; i<list.size(); i++){
+                    list.get(i).getMediaPlayer().stop();
+                    list.get(i).getMediaPlayer().release();
+                    list.get(i).setMediaPlayer(null);
+                    list.get(i).getButton().setEnabled(true);
+                }
+                list = new ArrayList<>();
+                adapter.notifyDataSetChanged();
+                startActivity(new Intent(FocusActivity.this, SleepActivity.class));
+                finish();
+
+            }
+        });
+
+        iv_chart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for(int i = 0; i<list.size(); i++){
+                    list.get(i).getMediaPlayer().stop();
+                    list.get(i).getMediaPlayer().release();
+                    list.get(i).setMediaPlayer(null);
+                    list.get(i).getButton().setEnabled(true);
+                }
+                list = new ArrayList<>();
+                adapter.notifyDataSetChanged();
+                startActivity(new Intent(FocusActivity.this, PieChartActivity.class));
+                finish();
+            }
+        });
+
+        iv_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i<list.size(); i++){
+                    list.get(i).getMediaPlayer().stop();
+                    list.get(i).getMediaPlayer().release();
+                    list.get(i).setMediaPlayer(null);
+                    list.get(i).getButton().setEnabled(true);
+                }
+                list = new ArrayList<>();
+                adapter.notifyDataSetChanged();
+                startActivity(new Intent(FocusActivity.this, SetActivity.class));
+                finish();
+            }
+        });
+
         for(int i = 0 ; i < btn_array.length; i++){
-            final int btn_id = getResources().getIdentifier("Button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
+            final int btn_id = getResources().getIdentifier("button_"+(i+1), "id", "thrr.asmr.finalproject.com.thrr"); //버튼 아이디 한번에.
             btn_array[i] = findViewById(btn_id);
 
             final int finalI = i;
@@ -122,21 +230,24 @@ public class FocusActivity extends AppCompatActivity{
                             mediaPlayer1 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
                             mediaPlayer1.setLooping(true);
                             mediaPlayer1.start();
-                            list.add(new playListVO(R.drawable.day, btn_array[finalI], mediaPlayer1));
+                            btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
+                            list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer1, "focus", finalI));
                             btn_array[finalI].setEnabled(false);
                             break;
                         case 1: //소리 하나 선택중
                             mediaPlayer2 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
                             mediaPlayer2.setLooping(true);
                             mediaPlayer2.start();
-                            list.add(new playListVO(R.drawable.night, btn_array[finalI], mediaPlayer2));
+                            btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
+                            list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer2, "focus", finalI));
                             btn_array[finalI].setEnabled(false);
                             break;
                         case 2: //소리 두개 선택중
                             mediaPlayer3 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
                             mediaPlayer3.setLooping(true);
                             mediaPlayer3.start();
-                            list.add(new playListVO(R.drawable.test, btn_array[finalI], mediaPlayer3));
+                            btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
+                            list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer3,"focus", finalI));
                             btn_array[finalI].setEnabled(false);
                             break;
                         case 3: //리스트가 꽉 참
@@ -345,5 +456,17 @@ public class FocusActivity extends AppCompatActivity{
                 startActivityForResult(intent, OVERLAY_PERMISSION_CODE);
             }
         }
+    }
+    //다이얼로그 메소드
+    void show(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("알림");
+        builder.setMessage("몰입시간을 설정할 수 있습니다. 홈키를 제외한 버튼은 무력화되며 소음값이 서버에 전달되어 집중환경을 분석할 수 있습니다.");
+        builder.setPositiveButton("알겠어요!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 }
