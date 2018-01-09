@@ -39,9 +39,9 @@ public class SignInActivity extends AppCompatActivity {
                 if(inputEmail.equals("") | inputPw.equals("")){
                     Toast.makeText(getApplicationContext(),"빈 칸이 있습니다.",Toast.LENGTH_LONG).show();
                 }else{
-                    //DB에 올릴거야.
+                    /* =================== DB 회원테이블에 올리는 부분 ======================= */
 
-                    //DB 완료 후 이전창으로
+                    /* ================= DB 완료 ====================== */
                     finish();
                 }
 

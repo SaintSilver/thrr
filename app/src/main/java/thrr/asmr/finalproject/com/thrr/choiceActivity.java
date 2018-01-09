@@ -50,7 +50,7 @@ public class choiceActivity extends AppCompatActivity {
         btn_chart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(choiceActivity.this, PieChartActivity.class));
+                startActivity(new Intent(choiceActivity.this, MainActivity.class));
             }
         });
 

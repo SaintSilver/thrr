@@ -59,12 +59,17 @@ public class LoginActivity extends AppCompatActivity implements
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getEmail = String.valueOf(inputEmail.getText());
-                String getPw = String.valueOf(inputPw.getText());
-                if(getEmail.equals("kutar37@gmail.com") && getPw.equals("1234")){
-                    String email = getEmail;
+                String userInputEmail = String.valueOf(inputEmail.getText());
+                String userInputPw = String.valueOf(inputPw.getText());
+
+                /* =============== 로그인 , userInputEmail, userInputPw 서버로 보내서 DB와 대조해야함 =================*/
+                String DBemail = "";
+                String DBpw = "";
+                /* =============== DB조회 완료 ======================== */
+
+                if(userInputEmail.equals(DBemail) && userInputPw.equals(DBpw)){
                     spf = getSharedPreferences("emailspf", MODE_PRIVATE);
-                    spf.edit().putString("email", email).commit();
+                    spf.edit().putString("email", DBemail).commit();
                     startActivity(new Intent(LoginActivity.this, choiceActivity.class));
                     finish();
                 }else{

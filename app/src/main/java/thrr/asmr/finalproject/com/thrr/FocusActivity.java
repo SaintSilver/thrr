@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -47,29 +48,15 @@ public class FocusActivity extends AppCompatActivity{
     private TextView textView = null;
     private Button btn_lock, btn_time ;
 
-    private int[] musicID = {
-            R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
-            R.raw.blanket, R.raw.book, R.raw.chopping, R.raw.cream, R.raw.hairbrushing, R.raw.ice, R.raw.keyboard, R.raw.pencil, R.raw.piano, R.raw.scissors,
-            R.raw.egg, R.raw.hairdryer, R.raw.plasticbag, R.raw.pountainpen, R.raw.sand, R.raw.shampoo, R.raw.slime, R.raw.soap, R.raw.train, R.raw.zengarden,
-            R.raw.chicken, R.raw.conflakes, R.raw.cracker, R.raw.dango, R.raw.hotdog, R.raw.jelly, R.raw.macaron, R.raw.noodle, R.raw.pizza, R.raw.shrimppuffing,
-            R.raw.carving, R.raw.ear, R.raw.earblowing, R.raw.hand, R.raw.heartbeat, R.raw.lids, R.raw.scratch, R.raw.shaving, R.raw.tapping, R.raw.walking};
-
-    int[] grayIcon = {R.drawable.rain7,R.drawable.bird7,R.drawable.bug7,R.drawable.leaves7,R.drawable.cicada7,R.drawable.fire7,R.drawable.snow7,R.drawable.valley7,R.drawable.waterdrop7,R.drawable.wave7,
-            R.drawable.blanket27,R.drawable.book27,R.drawable.knife27,R.drawable.cream27,R.drawable.hiarbrush27,R.drawable.ice27,R.drawable.keyboard227,R.drawable.pencil7,R.drawable.piano27,R.drawable.scissors7,
-            R.drawable.egg7,R.drawable.hairdryer27,R.drawable.plasticbag7,R.drawable.pountainpen7,R.drawable.sand7,R.drawable.shampoo7,R.drawable.slime7,R.drawable.soap7,R.drawable.train7,R.drawable.zengarden27,
-            R.drawable.chicken27,R.drawable.conflakes27,R.drawable.cracker27,R.drawable.dango27,R.drawable.hotdog27,R.drawable.jelly27,R.drawable.macaron27,R.drawable.noodle7,R.drawable.pizza7,R.drawable.shrimppuffing7,
-            R.drawable.carving27,R.drawable.ear7,R.drawable.earblow7,R.drawable.hand27,R.drawable.heart7,R.drawable.lids7,R.drawable.scratch7,R.drawable.shaving7,R.drawable.tapping7,R.drawable.walking7,
-    };
-
-    private int[] whiteIcon = {
-            R.drawable.rain125, R.drawable.bird5, R.drawable.noun_308781_cc5, R.drawable.noun_1095263_cc5, R.drawable.cicada5, R.drawable.noun_7380_cc5, R.drawable.winter5, R.drawable.noun_3411_cc5, R.drawable.faucet5, R.drawable.wave5,
-            R.drawable.blanket5, R.drawable.book5, R.drawable.knife5, R.drawable.cream5, R.drawable.hiarbrush5, R.drawable.ice5, R.drawable.keyboard5, R.drawable.pen5, R.drawable.piano5, R.drawable.scissors5,
-            R.drawable.egg5, R.drawable.hairdryer5, R.drawable.plasticbag5, R.drawable.pountainpen5, R.drawable.sand5, R.drawable.shampoo5, R.drawable.sli5, R.drawable.soap5, R.drawable.train5, R.drawable.zengarden5,
-            R.drawable.chicken5, R.drawable.conflakes5, R.drawable.cracker5, R.drawable.dango5, R.drawable.hotdog5, R.drawable.jelly5, R.drawable.macaron5, R.drawable.noodle5, R.drawable.pizza5, R.drawable.shrimppuffing5,
-            R.drawable.carving5, R.drawable.ear5, R.drawable.earblow5, R.drawable.hand5, R.drawable.heart5, R.drawable.lid5, R.drawable.scratch5, R.drawable.shaving5, R.drawable.tapping5, R.drawable.walking5
-    };
+    private MusicListVO musicListVO = new MusicListVO();
+    private int[] musicID = musicListVO.getMusicID();
+    private int[] grayIcon = musicListVO.getGrayIcon();
+    private int[] whiteIcon = musicListVO.getWhiteIcon();
+    private String[] musicName = musicListVO.getMusicName();
+    private String selectMusicName1, selectMusicName2, selectMusicName3 = "";
 
     private ArrayList<playListVO> list = new ArrayList<>();
+    private SharedPreferences spf ;
 
     private int alarmTime = -1;
     private long backKeyPressedTime = 0;
@@ -78,12 +65,26 @@ public class FocusActivity extends AppCompatActivity{
     private customViewGroup view;
     private TimePickerDialog timePickerDialog = null;
     private boolean askedForOverlayPermission;
-    int OVERLAY_PERMISSION_CODE= 1;
+    private int OVERLAY_PERMISSION_CODE= 1;
+
+    private String focus_time;
+
+    // 소리센서 객체
+    private AudioReader audioReader;
+    private int sampleRate = 8000;
+    private int inputBlockSize = 256;
+    private int sampleDecimate = 1;
+    private Boolean check =false;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus);
+
+        //소리 관련
+        audioReader = new AudioReader();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         addOverlay();
 
@@ -124,6 +125,7 @@ public class FocusActivity extends AppCompatActivity{
         ts5.setIndicator("기타") ;
         tabHost1.addTab(ts5) ;
 
+        //탭 부분 폰트변경.
         for(int i=0;i<tabHost1.getTabWidget().getChildCount();i++) {
             TextView tv = (TextView) tabHost1.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(Color.parseColor("#282828"));
@@ -195,7 +197,7 @@ public class FocusActivity extends AppCompatActivity{
                 }
                 list = new ArrayList<>();
                 adapter.notifyDataSetChanged();
-                startActivity(new Intent(FocusActivity.this, PieChartActivity.class));
+                startActivity(new Intent(FocusActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -232,6 +234,7 @@ public class FocusActivity extends AppCompatActivity{
                             btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
                             list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer1, "focus", finalI));
                             btn_array[finalI].setEnabled(false);
+                            selectMusicName1 = musicName[finalI];
                             break;
                         case 1: //소리 하나 선택중
                             mediaPlayer2 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
@@ -240,6 +243,7 @@ public class FocusActivity extends AppCompatActivity{
                             btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
                             list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer2, "focus", finalI));
                             btn_array[finalI].setEnabled(false);
+                            selectMusicName2 = musicName[finalI];
                             break;
                         case 2: //소리 두개 선택중
                             mediaPlayer3 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
@@ -248,6 +252,7 @@ public class FocusActivity extends AppCompatActivity{
                             btn_array[finalI].setBackgroundResource(whiteIcon[finalI]);
                             list.add(new playListVO(grayIcon[finalI], btn_array[finalI], mediaPlayer3,"focus", finalI));
                             btn_array[finalI].setEnabled(false);
+                            selectMusicName3 = musicName[finalI];
                             break;
                         case 3: //리스트가 꽉 참
                             Toast.makeText(getApplicationContext(),"3곡까지만 조합할 수 있습니다.", Toast.LENGTH_LONG).show();
@@ -292,15 +297,19 @@ public class FocusActivity extends AppCompatActivity{
                     }
 
                 }
+                focus_time = String.valueOf(hour*60 + min);
                 alarmTime = hour*60 + min;
             }
         }, hour, min, true);
+
         //잠글때 스크롤 안내려오게하고 시간설정 과 시작버튼 사라지게하기
         btn_lock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 scrollLock();
+                /*소리측정 시작*/
+                doStart();
 
                 new Thread(new timeThread()).start();
                 if(hour>0||min>0) {
@@ -315,6 +324,7 @@ public class FocusActivity extends AppCompatActivity{
     @Override
     public void onBackPressed(){
         if(alarmTime <0) {
+
             for(int i = 0; i<list.size(); i++){
                 list.get(i).getMediaPlayer().stop();
                 list.get(i).getMediaPlayer().release();
@@ -323,8 +333,8 @@ public class FocusActivity extends AppCompatActivity{
             }
             list = new ArrayList<>();
             adapter.notifyDataSetChanged();
-            //알람시간이 0보다 작으면 백키가 눌림
 
+            //알람시간이 0보다 작으면 백키가 눌림
             backButtonFunction();
 
         }
@@ -351,7 +361,7 @@ public class FocusActivity extends AppCompatActivity{
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             //    finish();
-            //     toast.cancel();
+            //    toast.cancel();
         }
 
     }
@@ -389,6 +399,24 @@ public class FocusActivity extends AppCompatActivity{
                 btn_lock.setVisibility(View.VISIBLE);
                 btn_time.setVisibility(View.VISIBLE);
                 scrollOn();
+
+                doStop();
+                Log.v("데시벨측정 카운트값:::::",String.valueOf(count));
+
+
+                /* ======================== 서버 처리부분 ========================= */
+                spf = getSharedPreferences("emailspf", MODE_PRIVATE);
+                String email = spf.getString("email", ""); // 이메일
+                String select_ASMR = selectMusicName1+"/"+selectMusicName2+"/"+selectMusicName3; //asmr 목록
+
+                // count 변수값 : 소음 카운트
+                // focus_time 변수값 : 집중시간
+                // 날짜는 서버에서 처리하셈.
+
+                /* ======================= 서버 처리 완료 ========================= */
+
+
+
 
             }
             alarmTime = msg.arg1;
@@ -442,9 +470,9 @@ public class FocusActivity extends AppCompatActivity{
         localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         localLayoutParams.gravity = Gravity.TOP;
         localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
-// this is to enable the notification to recieve touch events
+        // this is to enable the notification to recieve touch events
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-// Draws over status bar
+        // Draws over status bar
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         localLayoutParams.height = (int) (50 * getResources().getDisplayMetrics().scaledDensity);
@@ -499,4 +527,39 @@ public class FocusActivity extends AppCompatActivity{
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         }
     }
+
+    /*소리측정 관련 메소드*/
+    public void doStart()
+    {
+        audioReader.startReader(sampleRate, inputBlockSize * sampleDecimate, new AudioReader.Listener()
+        {
+            @Override
+            public final void onReadComplete(int dB){ receiveDecibel(dB); }
+
+            @Override
+            public void onReadError(int error){ }
+        });
+    }
+
+    private void receiveDecibel(final int dB)
+    {
+        Log.e("###", dB+" dB");
+
+        if(dB+40>20){
+            check = true;
+        }else{
+            check = false;
+        }
+        if(check){
+            count ++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void doStop(){ audioReader.stopReader(); }
+    /*소리측정 끝*/
 }

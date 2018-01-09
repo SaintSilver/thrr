@@ -19,20 +19,19 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FocusActivity" />
-        <activity android:name=".introActivity">
+        <activity android:name=".FocusActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".introActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".choiceActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SleepActivity" />
-        <activity android:name=".SetActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".PieChartActivity" />
+        <activity android:name=".choiceActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SleepActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SetActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SignInActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".BroadcastD"

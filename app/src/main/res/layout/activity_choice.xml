@@ -1,65 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="thrr.asmr.finalproject.com.thrr.choiceActivity">
-
-<TableLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="8dp"
-    tools:layout_editor_absoluteY="8dp">
+    android:background="@drawable/focuspage"
+    tools:context="thrr.asmr.finalproject.com.thrr.choiceActivity">
 
-    <TableRow
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
-        <Button
-            android:id="@+id/btn_focus"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/holo_green_light"
-            android:text="FOCUS"
-            android:textSize="24sp" />
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_sleep"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/holo_blue_light"
-            android:text="SLEEP"
-            android:textSize="24sp" />
-    </TableRow>
+            <Button
+                android:id="@+id/btn_focus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00ff0000"
+                android:text="FOCUS"
+                android:textColor="#F2F2F2"
+                android:textSize="24sp" />
 
-    <TableRow
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+            <Button
+                android:id="@+id/btn_sleep"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00ff0000"
+                android:text="SLEEP"
+                android:textColor="#F2F2F2"
+                android:textSize="24sp" />
+        </TableRow>
 
-        <Button
-            android:id="@+id/btn_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/holo_orange_light"
-            android:text="CHART"
-            android:textSize="24sp" />
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_setting"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/holo_red_light"
-            android:text="SETTING"
-            android:textSize="24sp" />
-    </TableRow>
+            <Button
+                android:id="@+id/btn_chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00ff0000"
+                android:text="CHART"
+                android:textColor="#F2F2F2"
+                android:textSize="24sp" />
 
-</TableLayout>
+            <Button
+                android:id="@+id/btn_setting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00ff0000"
+                android:text="SETTING"
+                android:textColor="#F2F2F2"
+                android:textSize="24sp" />
+        </TableRow>
+
+    </TableLayout>
 
 </RelativeLayout>

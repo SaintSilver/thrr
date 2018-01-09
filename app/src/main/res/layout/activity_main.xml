@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:id="@+id/chartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFBEF"
+        tools:context="thrr.asmr.finalproject.com.thrr.MainActivity">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/day_chart2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/day_chart1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_single1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_single2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_single3"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_single4"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/day_chart3"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/day_chart4"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView_date" />
+
+        <ImageView
+            android:id="@+id/imageView_m"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/minus" />
+
+        <ImageView
+            android:id="@+id/imageView_p"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/plus" />
+
+        <TextView
+            android:id="@+id/textView_date"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/imageView_m"
+            android:layout_toStartOf="@+id/imageView_p"
+            android:text="TextView" />
+
+        <TabHost
+            android:id="@+id/tab_tab"
+            android:layout_width="match_parent"
+            android:layout_height="145dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/day_chart3"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="80dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="177dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/chartbtn_1"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:background="@drawable/silver"
+                                        android:text="기상시간 (일주일)" />
+
+                                    <Button
+                                        android:id="@+id/chartbtn_2"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginRight="10dp"
+                                        android:background="@drawable/silver"
+                                        android:text="기상시간 (한달)" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/chartbtn_3"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:background="@drawable/silver"
+                                        android:text="취침시간 (일주일)" />
+
+                                    <Button
+                                        android:id="@+id/chartbtn_4"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginRight="10dp"
+                                        android:background="@drawable/silver"
+                                        android:text="취침시간 (일주일)" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:orientation="horizontal"></LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp">
+
+                                    <Button
+                                        android:id="@+id/chartbtn_5"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:background="@drawable/silver"
+                                        android:text="크기, 밝기, 수면량" />
+
+                                    <!-- 버튼 옆 공백에 이미지
+
+                                   <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginStart="70dp"
+                                        android:background="@drawable/icon_yellow"
+                                        android:scaleType="centerInside" />-->
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/chartbtn_6"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:background="@drawable/silver"
+                                        android:text="집중시간 (일주일)" />
+
+                                    <Button
+                                        android:id="@+id/chartbtn_7"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginRight="10dp"
+                                        android:background="@drawable/silver"
+                                        android:text="집중시간 (한달)" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/chartbtn_8"
+                                        android:layout_width="190dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:background="@drawable/silver"
+                                        android:text="크기, 밝기, 수면량" />
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+
+        <TextView
+            android:id="@+id/tv_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            android:text="추천하는 ASMR"
+            android:textSize="15dp" />
+
+
+    </RelativeLayout>
+</ScrollView>

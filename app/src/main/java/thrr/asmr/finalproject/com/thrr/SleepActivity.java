@@ -51,28 +51,12 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
     private TextView textView, textView2;
     private Button btn_lock, btn_time, btn_reset;
 
-    private int[] musicID = {
-            R.raw.rain, R.raw.bird, R.raw.bug, R.raw.leaves, R.raw.cicada, R.raw.fire, R.raw.snow, R.raw.valley, R.raw.waterdrops, R.raw.wave,
-            R.raw.blanket, R.raw.book, R.raw.chopping, R.raw.cream, R.raw.hairbrushing, R.raw.ice, R.raw.keyboard, R.raw.pencil, R.raw.piano, R.raw.scissors,
-            R.raw.egg, R.raw.hairdryer, R.raw.plasticbag, R.raw.pountainpen, R.raw.sand, R.raw.shampoo, R.raw.slime, R.raw.soap, R.raw.train, R.raw.zengarden,
-            R.raw.chicken, R.raw.conflakes, R.raw.cracker, R.raw.dango, R.raw.hotdog, R.raw.jelly, R.raw.macaron, R.raw.noodle, R.raw.pizza, R.raw.shrimppuffing,
-            R.raw.carving, R.raw.ear, R.raw.earblowing, R.raw.hand, R.raw.heartbeat, R.raw.lids, R.raw.scratch, R.raw.shaving, R.raw.tapping, R.raw.walking
-    };
-
-    int[] grayIcon = {R.drawable.rain7,R.drawable.bird7,R.drawable.bug7,R.drawable.leaves7,R.drawable.cicada7,R.drawable.fire7,R.drawable.snow7,R.drawable.valley7,R.drawable.waterdrop7,R.drawable.wave7,
-            R.drawable.blanket27,R.drawable.book27,R.drawable.knife27,R.drawable.cream27,R.drawable.hiarbrush27,R.drawable.ice27,R.drawable.keyboard227,R.drawable.pencil7,R.drawable.piano27,R.drawable.scissors7,
-            R.drawable.egg7,R.drawable.hairdryer27,R.drawable.plasticbag7,R.drawable.pountainpen7,R.drawable.sand7,R.drawable.shampoo7,R.drawable.slime7,R.drawable.soap7,R.drawable.train7,R.drawable.zengarden27,
-            R.drawable.chicken27,R.drawable.conflakes27,R.drawable.cracker27,R.drawable.dango27,R.drawable.hotdog27,R.drawable.jelly27,R.drawable.macaron27,R.drawable.noodle7,R.drawable.pizza7,R.drawable.shrimppuffing7,
-            R.drawable.carving27,R.drawable.ear7,R.drawable.earblow7,R.drawable.hand27,R.drawable.heart7,R.drawable.lids7,R.drawable.scratch7,R.drawable.shaving7,R.drawable.tapping7,R.drawable.walking7,
-    };
-
-    private int[] whiteIcon = {
-            R.drawable.rain125, R.drawable.bird5, R.drawable.noun_308781_cc5, R.drawable.noun_1095263_cc5, R.drawable.cicada5, R.drawable.noun_7380_cc5, R.drawable.winter5, R.drawable.noun_3411_cc5, R.drawable.faucet5, R.drawable.wave5,
-            R.drawable.blanket5, R.drawable.book5, R.drawable.knife5, R.drawable.cream5, R.drawable.hiarbrush5, R.drawable.ice5, R.drawable.keyboard5, R.drawable.pen5, R.drawable.piano5, R.drawable.scissors5,
-            R.drawable.egg5, R.drawable.hairdryer5, R.drawable.plasticbag5, R.drawable.pountainpen5, R.drawable.sand5, R.drawable.shampoo5, R.drawable.sli5, R.drawable.soap5, R.drawable.train5, R.drawable.zengarden5,
-            R.drawable.chicken5, R.drawable.conflakes5, R.drawable.cracker5, R.drawable.dango5, R.drawable.hotdog5, R.drawable.jelly5, R.drawable.macaron5, R.drawable.noodle5, R.drawable.pizza5, R.drawable.shrimppuffing5,
-            R.drawable.carving5, R.drawable.ear5, R.drawable.earblow5, R.drawable.hand5, R.drawable.heart5, R.drawable.lid5, R.drawable.scratch5, R.drawable.shaving5, R.drawable.tapping5, R.drawable.walking5
-    };
+    private MusicListVO musicListVO = new MusicListVO();
+    private int[] musicID = musicListVO.getMusicID();
+    private int[] grayIcon = musicListVO.getGrayIcon();
+    private int[] whiteIcon = musicListVO.getWhiteIcon();
+    private String[] musicName = musicListVO.getMusicName();
+    private String selectMusicName1, selectMusicName2, selectMusicName3 = "";
 
     private ArrayList<playListVO> list = new ArrayList<>();
 
@@ -122,7 +106,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         //소리 관련
         audioReader = new AudioReader();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
 
         mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);    //서비스 등록같음
         mCalendar = new GregorianCalendar();                                            //그레고리언 생성
@@ -178,9 +161,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); // sensor Service 얻어오기
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); // 조도 센서랍니다
 
-        //데시벨측정
-
-
         //메뉴버튼 3개
         iv_focus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,7 +191,7 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 }
                 list = new ArrayList<>();
                 adapter.notifyDataSetChanged();
-                startActivity(new Intent(SleepActivity.this, PieChartActivity.class));
+                startActivity(new Intent(SleepActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -290,7 +270,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
         /*몰입모드 끝 */
 
-
     //listview
         lv = (ListView) findViewById(R.id.musiclistview1);
 
@@ -310,7 +289,8 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                             btn_array[finalI].setBackgroundResource(grayIcon[finalI]);
                             list.add(new playListVO(whiteIcon[finalI], btn_array[finalI], mediaPlayer1, "sleep",finalI));
                             btn_array[finalI].setEnabled(false);
-
+                            selectMusicName1 = musicName[finalI];
+                            Toast.makeText(getApplicationContext(), selectMusicName1, Toast.LENGTH_LONG).show();
                             break;
                         case 1: //소리 하나 선택중
                             mediaPlayer2 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
@@ -319,7 +299,8 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                             btn_array[finalI].setBackgroundResource(grayIcon[finalI]);
                             list.add(new playListVO(whiteIcon[finalI], btn_array[finalI], mediaPlayer2, "sleep",finalI));
                             btn_array[finalI].setEnabled(false);
-
+                            selectMusicName2 = musicName[finalI];
+                            Toast.makeText(getApplicationContext(), selectMusicName2, Toast.LENGTH_LONG).show();
                             break;
                         case 2: //소리 두개 선택중
                             mediaPlayer3 = MediaPlayer.create(getApplicationContext(), musicID[finalI]);
@@ -328,7 +309,8 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                             btn_array[finalI].setBackgroundResource(grayIcon[finalI]);
                             list.add(new playListVO(whiteIcon[finalI], btn_array[finalI], mediaPlayer3, "sleep",finalI));
                             btn_array[finalI].setEnabled(false);
-
+                            selectMusicName3 = musicName[finalI];
+                            Toast.makeText(getApplicationContext(), selectMusicName3, Toast.LENGTH_LONG).show();
                             break;
                         case 3: //리스트가 꽉 참
                             Toast.makeText(getApplicationContext(), "3곡까지만 조합할 수 있습니다.", Toast.LENGTH_LONG).show();
@@ -337,7 +319,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                     adapter.notifyDataSetChanged();
                 }
             });
-
 
             adapter = new playListAdapter(getApplicationContext(), R.layout.musiclist_layout, list);
             ((ListView) findViewById(R.id.musiclistview1)).setAdapter(adapter);
@@ -354,7 +335,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
             btn_reset.setVisibility(View.INVISIBLE);
             textView.setText(getTime4 + " : " + getTime5);
         }
-
 
         //시간설정 창 띄우기
         timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {    //시간설정창 띄우기
@@ -404,19 +384,27 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                     k+=Float.parseFloat(meanArray.get(j)); // 조도 값이 담겨있는 ArrayList 안의 값을 모두 더해줌
                 }
                 k = k/meanArray.size(); //평균내기
-
-                /* ==================K 값을 서버로 전달하면 돼 ===================*/
                 Log.v("조도값 :::::::::::::::",String.valueOf(k));
-
                 /*조도센서 끝*/
 
                 /*소리 */
                 doStop();
                 Log.v("소리측정 횟수 :::::::::::::",String.valueOf(count));
 
-                /* =================count값 서버전달하면 돼 =====================*/
+                /* ===================== 서버처리부분  ============================== */
+                spf = getSharedPreferences("emailspf", MODE_PRIVATE);
 
-                /*소리 끝*/
+                String email = spf.getString("email", ""); // 이메일
+                String select_ASMR = selectMusicName1+"/"+selectMusicName2+"/"+selectMusicName3; //asmr 목록
+
+                //k 변수값: 조도
+                //count 변수값 : 소리
+                //잠자는시간
+                //일어난시간
+                //수면시간
+
+                /* ======================= 서버 처리 완료 ========================= */
+
 
             }
         });
@@ -467,7 +455,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         }
     }
 
-
     //알람의 설정
     private void setAlarm() {
         mManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -480,8 +467,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
             spf.edit().putInt("AlarmMin", min).commit();
         } else {
             mCalendar.set(Integer.parseInt(getTime1), Integer.parseInt(getTime2) - 1, Integer.parseInt(getTime3), hour, min, 00);
-
-
             mManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent());
 
             spf.edit().putInt("AlarmHour", hour).commit();
