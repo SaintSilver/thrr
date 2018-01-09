@@ -397,11 +397,53 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 String email = spf.getString("email", ""); // 이메일
                 String select_ASMR = selectMusicName1+"/"+selectMusicName2+"/"+selectMusicName3; //asmr 목록
 
-                //k 변수값: 조도
-                //count 변수값 : 소리
-                //잠자는시간
-                //일어난시간
+                //잠자기 시작한 시간
+                spf = getSharedPreferences("time",MODE_PRIVATE);
+                String startTime = spf.getString("startTime","");
+
+                // 일어난시간
+                Date date = new Date();
+                SimpleDateFormat endTimeFormat = new SimpleDateFormat("DD:HH:mm");
+                String endTime = endTimeFormat.format(date).toString();
+
                 //수면시간
+                Toast.makeText(getApplicationContext(),startTime+"/"+endTime,Toast.LENGTH_LONG).show();
+
+                String[] start = startTime.split(":"); //일, 시, 분이 들어간다.
+                String[] end = endTime.split(":"); //일, 시, 분이 들어간다.
+                int sleepTime = 0; // 총 수면시간.
+                Log.v("알람을 설정한 때 ::::",start[0]+":"+start[1]+":"+start[2]);
+                Log.v("알람을 껐을 때 ::::",end[0]+":"+end[1]+":"+end[2]);
+
+                if(end[0].equals(start[0])){ //같은 날일때.
+                    if(Integer.parseInt(end[2])>Integer.parseInt(start[2])){ //자리바꿈이 필요없을때.
+
+                        sleepTime = ((Integer.parseInt(end[1])-Integer.parseInt(start[1])) * 60) + Integer.parseInt(end[2]) - Integer.parseInt(start[2]);
+                        Log.v("IF문 어디에::::","같은 날이고 자리바꿈이 필요없다.");
+                    }else { //자리바꿈이 필요함.
+                        sleepTime = ((Integer.parseInt(end[1]) - 1 - Integer.parseInt(start[1])) /*시간*/ * 60) + ((Integer.parseInt(end[2]) + 60) - Integer.parseInt(start[2]) /*분*/);
+                        Log.v("IF문 어디에::::","같은 날인데 자리바꿈이 필요하다.");
+                    }
+                }else{ // 다음 날일때.
+                    if(Integer.parseInt(end[2])>Integer.parseInt(start[2])) { //자리바꿈이 필요없을때.
+                        sleepTime = ((Integer.parseInt(end[1]) + 24 - Integer.parseInt(start[1])) /*시간*/ *60) + (Integer.parseInt(end[2])-Integer.parseInt(start[2])/*분*/);
+                        Log.v("IF문 어디에::::","다음 날인데 자리바꿈이 필요없다.");
+                    }else{ //다음 날이고, 자리바꿈이 필요함.
+                        sleepTime = ((Integer.parseInt(end[1]) + 23 - Integer.parseInt(start[1])) /*시간*/ *60) + ((Integer.parseInt(end[2]) + 60) - Integer.parseInt(start[2]) /*분*/);
+                        Log.v("IF문 어디에::::","다음 날인데 자리바꿈이 필요하다.");
+                    }
+                }
+                Log.v("총 수면시간:::::::::::" , String.valueOf(sleepTime)+"분");
+
+                // email : 이메일
+                // select_ASMR : ASMR 목록
+                // startTime : 잠자기 시작한 시간
+                // endTime : 일어난 시간
+                // String.valueOf(sleepTime) : 총 수면시간
+                // k : 조도 (float)
+                // count : 소리 (int)
+                /*======================== 서버처리 시작 ========================== */
+
 
                 /* ======================= 서버 처리 완료 ========================= */
 
@@ -429,6 +471,13 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
 
                 /*소리측정 시작*/
                 doStart();
+
+                // 잠자기 시작하는 시간측정 후 spf에 올림
+                Date date = new Date();
+                SimpleDateFormat endTimeFormat = new SimpleDateFormat("DD:HH:mm");
+                String startTime = endTimeFormat.format(date).toString();
+                spf = getSharedPreferences("time",MODE_PRIVATE);
+                spf.edit().putString("startTime",startTime).commit();
             }
         });
     }

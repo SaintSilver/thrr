@@ -17,7 +17,7 @@
         android:layout_marginTop="70dp"
         android:text="스르륵"
         android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textColor="#FAFAFA"
         android:textSize="50sp"
         android:textStyle="bold" />
 
@@ -28,38 +28,30 @@
         android:layout_marginBottom="60dp"
         android:text="-나만의 ASMR-"
         android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+        android:textColor="#FAFAFA" />
 
     <EditText
         android:id="@+id/inputEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:ems="10"
         android:hint="이메일을 입력하세요"
         android:inputType="textEmailAddress"
-        android:selectAllOnFocus="false" />
+        android:selectAllOnFocus="false"
+        android:textColor="#FAFAFA" />
 
     <EditText
         android:id="@+id/inputPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:ems="10"
         android:hint="패스워드를 입력하세요"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/tv_signin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginLeft="60dp"
-        android:text="아직 회원이 아니신가요? >"
-        android:textSize="14sp" />
+        android:inputType="textPassword"
+        android:textColor="#FAFAFA" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -76,16 +68,17 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginBottom="30dp"
-        android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
-        android:background="#646464" />
+        android:layout_marginRight="50dp"
+        android:background="#FAFAFA" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OR"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textColor="#FAFAFA" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
@@ -95,8 +88,21 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
         android:visibility="visible">
 
     </com.google.android.gms.common.SignInButton>
+
+    <TextView
+        android:id="@+id/tv_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:text="아직 회원이 아니신가요? >"
+        android:textAlignment="viewEnd"
+        android:textColor="#FAFAFA"
+        android:textSize="20sp" />
 
 </LinearLayout>

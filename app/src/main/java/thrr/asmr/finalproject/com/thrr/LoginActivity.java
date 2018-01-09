@@ -47,11 +47,16 @@ public class LoginActivity extends AppCompatActivity implements
 
         //findID
         inputEmail = (EditText) findViewById(R.id.inputEmail);
+        inputEmail.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/bm.ttf"));
         inputPw = (EditText) findViewById(R.id.inputPw);
+        inputPw.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/bm.ttf"));
         loginBtn = (Button) findViewById(R.id.loginBtn);
         tv_signin = (TextView) findViewById(R.id.tv_signin);
+        tv_signin.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/bm.ttf"));
         tv_main = (TextView) findViewById(R.id.tv_main);
+        tv_main.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/bm.ttf"));
         tv_sub = (TextView) findViewById(R.id.tv_sub);
+        tv_sub.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/bm.ttf"));
 
         loginBtn.setText("Login to My Account >");
 

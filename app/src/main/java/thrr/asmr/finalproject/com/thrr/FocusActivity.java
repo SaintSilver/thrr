@@ -403,15 +403,15 @@ public class FocusActivity extends AppCompatActivity{
                 doStop();
                 Log.v("데시벨측정 카운트값:::::",String.valueOf(count));
 
-
                 /* ======================== 서버 처리부분 ========================= */
                 spf = getSharedPreferences("emailspf", MODE_PRIVATE);
                 String email = spf.getString("email", ""); // 이메일
                 String select_ASMR = selectMusicName1+"/"+selectMusicName2+"/"+selectMusicName3; //asmr 목록
 
-                // count 변수값 : 소음 카운트
-                // focus_time 변수값 : 집중시간
-                // 날짜는 서버에서 처리하셈.
+                // email : 이메일
+                // select_ASMR : asmr 목록
+                // count : 소음 카운트
+                // focus_time : 집중시간
 
                 /* ======================= 서버 처리 완료 ========================= */
 
