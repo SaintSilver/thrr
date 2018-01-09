@@ -87,8 +87,8 @@ public class FocusActivity extends AppCompatActivity{
 
         addOverlay();
 
-        hour= getSharedPreferences("time", MODE_PRIVATE).getInt("hour", 00);//알람시간 설정의 시
-        min= getSharedPreferences("time", MODE_PRIVATE).getInt("min", 00);//알람시간 설정의 분
+        hour= getSharedPreferences("Ftime", MODE_PRIVATE).getInt("hour", 00);//알람시간 설정의 시
+        min= getSharedPreferences("Ftime", MODE_PRIVATE).getInt("min", 00);//알람시간 설정의 분
 
         textView = (TextView)findViewById(R.id.tv_clock);
         textView.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/digital.ttf"));
@@ -360,7 +360,6 @@ public class FocusActivity extends AppCompatActivity{
 
         @Override
         public void handleMessage(Message msg) {
-            textView.setText(msg.arg1 + "");
             if(msg.arg1%60<10){
                 if (msg.arg1 >= 60) {
                     if(msg.arg1/60<10) {
@@ -393,7 +392,7 @@ public class FocusActivity extends AppCompatActivity{
 
             }
             alarmTime = msg.arg1;
-            SharedPreferences sp = getSharedPreferences("time", MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences("Ftime", MODE_PRIVATE);
             SharedPreferences.Editor edit = sp.edit();
             edit.putInt("hour", alarmTime/60);
             edit.putInt("min", alarmTime%60);

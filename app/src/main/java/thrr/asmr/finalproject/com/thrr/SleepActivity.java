@@ -9,15 +9,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,10 +106,23 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
     float k = 0; // 평균
     String str;
 
+    // 소리센서 객체
+    private AudioReader audioReader;
+    private int sampleRate = 8000;
+    private int inputBlockSize = 256;
+    private int sampleDecimate = 1;
+    private Boolean check =false;
+    private int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep);
+
+        //소리 관련
+        audioReader = new AudioReader();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
 
         mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);    //서비스 등록같음
         mCalendar = new GregorianCalendar();                                            //그레고리언 생성
@@ -161,6 +177,9 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         //조도
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); // sensor Service 얻어오기
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); // 조도 센서랍니다
+
+        //데시벨측정
+
 
         //메뉴버튼 3개
         iv_focus.setOnClickListener(new View.OnClickListener() {
@@ -380,6 +399,7 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 spf.edit().putInt("AlarmHour", -1).commit();     //spf의 설정을 다시 -1로해서 버튼들이 기본으로 돌아가게 만들어줌
                 spf.edit().putInt("AlarmMin", -1).commit();
 
+                /*조도센서로 조도값 평균내기*/
                 for(int j=0; j<meanArray.size();j++){
                     k+=Float.parseFloat(meanArray.get(j)); // 조도 값이 담겨있는 ArrayList 안의 값을 모두 더해줌
                 }
@@ -388,6 +408,15 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 /* ==================K 값을 서버로 전달하면 돼 ===================*/
                 Log.v("조도값 :::::::::::::::",String.valueOf(k));
 
+                /*조도센서 끝*/
+
+                /*소리 */
+                doStop();
+                Log.v("소리측정 횟수 :::::::::::::",String.valueOf(count));
+
+                /* =================count값 서버전달하면 돼 =====================*/
+
+                /*소리 끝*/
 
             }
         });
@@ -409,9 +438,11 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 btn_lock.setVisibility(View.INVISIBLE);
                 btn_time.setVisibility(View.INVISIBLE);
                 btn_reset.setVisibility(View.VISIBLE);
+
+                /*소리측정 시작*/
+                doStart();
             }
         });
-
     }
 
     //푸시
@@ -506,6 +537,7 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
         builder.show();
     }
 
+    /* 조도센서 관련 메소드 */
     //센서 바뀌면 호출됨
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -520,14 +552,48 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
 
     protected void onResume(){
         super.onResume();
-
         mSensorManager.registerListener( this, mSensor,SensorManager.SENSOR_DELAY_UI); // onCreate에서 생성한 애를 등록함
     }
 
     protected void onPause(){
         super.onPause();
-
         mSensorManager.unregisterListener(this); //unregister
     }
 
+    /*조도 끝*/
+
+    /*소리측정 관련 메소드*/
+    public void doStart()
+    {
+        audioReader.startReader(sampleRate, inputBlockSize * sampleDecimate, new AudioReader.Listener()
+        {
+            @Override
+            public final void onReadComplete(int dB){ receiveDecibel(dB); }
+
+            @Override
+            public void onReadError(int error){ }
+        });
+    }
+
+    private void receiveDecibel(final int dB)
+    {
+        Log.e("###", dB+" dB");
+
+        if(dB+40>30){
+            check = true;
+        }else{
+            check = false;
+        }
+        if(check){
+            count ++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void doStop(){ audioReader.stopReader(); }
+    /*소리측정 끝*/
 }
