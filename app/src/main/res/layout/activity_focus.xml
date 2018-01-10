@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/focus_litle_up"
+    android:background="#E8F5E9"
     tools:context="thrr.asmr.finalproject.com.thrr.FocusActivity">
 
     <!--아이콘-->

@@ -252,7 +252,7 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
             TextView tv = (TextView) tabHost_1.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(Color.parseColor("#FFFFFF"));
             tv.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
-            tv.setTextSize(12);
+            tv.setTextSize(11);
         }
 
         /*몰입모드 (하단소프트키, 상태바 숨김) */
@@ -407,8 +407,6 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 String endTime = endTimeFormat.format(date).toString();
 
                 //수면시간
-                Toast.makeText(getApplicationContext(),startTime+"/"+endTime,Toast.LENGTH_LONG).show();
-
                 String[] start = startTime.split(":"); //일, 시, 분이 들어간다.
                 String[] end = endTime.split(":"); //일, 시, 분이 들어간다.
                 int sleepTime = 0; // 총 수면시간.
@@ -443,8 +441,20 @@ public class SleepActivity extends AppCompatActivity implements SensorEventListe
                 // k : 조도 (float)
                 // count : 소리 (int)
                 /*======================== 서버처리 시작 ========================== */
-
-
+                String sendmsg = "vision_sleep";
+                try{
+                    new Task(sendmsg).execute("3", email, startTime, endTime, String.valueOf(sleepTime), select_ASMR, String.valueOf(count), String.valueOf(k)).get();//보내는것
+                    Task task = new Task();
+                    String result = task.receiveMsg;
+                    Log.v("결과:",result);
+                    if(result.equals("false")) {
+                        Toast.makeText(getApplicationContext(), "서버 접속 실패..", Toast.LENGTH_LONG).show();
+                    }else if(result.equals("true")){
+                        Toast.makeText(getApplicationContext(), "수면 환경이 서버에 기록되었습니다.", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 /* ======================= 서버 처리 완료 ========================= */
 
 

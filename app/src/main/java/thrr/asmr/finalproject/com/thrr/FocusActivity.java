@@ -130,7 +130,7 @@ public class FocusActivity extends AppCompatActivity{
             TextView tv = (TextView) tabHost1.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(Color.parseColor("#282828"));
             tv.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/letter.ttf"));
-            tv.setTextSize(12);
+            tv.setTextSize(11);
         }
 
         //listview
@@ -412,6 +412,21 @@ public class FocusActivity extends AppCompatActivity{
                 // select_ASMR : asmr 목록
                 // count : 소음 카운트
                 // focus_time : 집중시간
+
+                String sendmsg = "vision_focus";
+                try{
+                    new Task(sendmsg).execute("4", email, focus_time, select_ASMR, String.valueOf(count)).get();//보내는것
+                    Task task = new Task();
+                    String result = task.receiveMsg;
+                    Log.v("결과:",result);
+                    if(result.equals("false")) {
+                        Toast.makeText(getApplicationContext(), "서버 접속 실패..", Toast.LENGTH_LONG).show();
+                    }else if(result.equals("true")){
+                        Toast.makeText(getApplicationContext(), "집중 환경이 서버에 기록되었습니다.", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 /* ======================= 서버 처리 완료 ========================= */
 

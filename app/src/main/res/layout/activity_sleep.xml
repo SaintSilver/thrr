@@ -612,11 +612,11 @@
         android:layout_height="30dp"
         android:layout_above="@+id/under_bar"
         android:layout_alignLeft="@id/under_bar"
-        android:layout_marginLeft="120dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="120dp"
         android:background="@drawable/silverbtn"
-        android:textColor="@android:color/background_light"
-        android:text="set" />
+        android:text="알람설정"
+        android:textColor="@android:color/background_light" />
 
     <Button
         android:id="@+id/btn_sleepEnd"
@@ -627,7 +627,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="120dp"
         android:background="@drawable/silverbtn"
-        android:text="start"
+        android:text="확인"
         android:textColor="@android:color/background_light" />
 
     <Button
@@ -639,7 +639,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/silverbtn"
-        android:text="끄기"
+        android:text="알람끄기"
         android:textColor="@android:color/background_light"
 
         />

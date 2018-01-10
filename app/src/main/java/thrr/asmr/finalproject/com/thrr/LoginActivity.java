@@ -68,18 +68,38 @@ public class LoginActivity extends AppCompatActivity implements
                 String userInputPw = String.valueOf(inputPw.getText());
 
                 /* =============== 로그인 , userInputEmail, userInputPw 서버로 보내서 DB와 대조해야함 =================*/
-                String DBemail = "";
-                String DBpw = "";
+
+                String sendmsg = "vision_write";
+                try{
+
+                    new Task(sendmsg).execute("2",userInputEmail, userInputPw).get();//보내는것
+                    Task task = new Task();
+                    String result = task.receiveMsg;
+                    Log.v("결과:",result);
+                    if(result.equals("false")) {
+                        Toast.makeText(getApplicationContext(), "이메일과 비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                    }else if(result.equals("true")){
+                        spf = getSharedPreferences("emailspf", MODE_PRIVATE);
+                        spf.edit().putString("email", userInputEmail).commit();
+                        startActivity(new Intent(LoginActivity.this, choiceActivity.class));
+                        Toast.makeText(getApplicationContext(), "환영합니다.", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }catch (Exception e){
+
+                    e.printStackTrace();
+
+                }
                 /* =============== DB조회 완료 ======================== */
 
-                if(userInputEmail.equals(DBemail) && userInputPw.equals(DBpw)){
+/*                if(userInputEmail.equals(DBemail) && userInputPw.equals(DBpw)){
                     spf = getSharedPreferences("emailspf", MODE_PRIVATE);
                     spf.edit().putString("email", DBemail).commit();
                     startActivity(new Intent(LoginActivity.this, choiceActivity.class));
                     finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "이메일과 비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
 

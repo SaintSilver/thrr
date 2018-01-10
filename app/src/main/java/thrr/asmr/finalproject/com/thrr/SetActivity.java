@@ -53,18 +53,26 @@ public class SetActivity extends AppCompatActivity implements GoogleApiClient.On
 
                 spf = getSharedPreferences("emailspf", MODE_PRIVATE);
                 String email = spf.getString("email", "");
-                if (!email.equals("")) {
+
                     Log.v("데이터삭제 요청 email :::::::", email + "");
-                    /* =================서버접속해서 email에 해당하는 DB값 삭제하면 돼================ */
-
-
-
-
-
-                } else {
-                    Log.v("데이터삭제 오류 ::::::", "email이 유효하지 않음:::" + email);
-                    Toast.makeText(getApplicationContext(), "데이터를 삭제하는데 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-                }
+                    /* =================서버접속해서 email에 해당하는 DB값 삭제=============== */
+                    String sendmsg = "vision_delete";
+                    try{
+                        new Task(sendmsg).execute("7",email).get();//보내는것
+                        Task task = new Task();
+                        String result = task.receiveMsg;
+                        Log.v("결과:",result);
+                        if(result.equals("false")) {
+                            Log.v("데이터삭제 오류 ::::::", "email이 유효하지 않음:::" + email);
+                            Toast.makeText(getApplicationContext(), "오류가 발생했어요.", Toast.LENGTH_LONG).show();
+                        }else if(result.equals("true")){
+                            Toast.makeText(getApplicationContext(), "데이터 삭제가 완료되었습니다.", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(SetActivity.this, introActivity.class));;
+                            finish();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
             }
         });
 
